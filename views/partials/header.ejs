@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= currentPage %> | Moist</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Helvetica', 'Arial', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-gray-50">
+    <nav class="w-full px-4 sm:px-6 lg:px-8 bg-white shadow-md">
+        <div class="max-w-7xl mx-auto flex justify-between items-center py-4">
+            <!-- Dynamic page title with general icon -->
+            <h1 class="text-2xl font-semibold text-gray-800 flex items-center">
+                <% 
+                let pageIcon = 'ri-pages-line';
+                switch(currentPage.toLowerCase()) {
+                    case 'home':
+                        pageIcon = 'ri-home-4-line';
+                        break;
+                    case 'shop':
+                        pageIcon = 'ri-store-2-line';
+                        break;
+                    case 'cart':
+                        pageIcon = 'ri-shopping-cart-2-line';
+                        break;
+                    case 'profile':
+                        pageIcon = 'ri-user-3-line';
+                        break;
+                    // Add more cases as needed
+                }
+                %>
+                <i class="<%= pageIcon %> mr-2"></i>
+                <%= currentPage %>.
+            </h1>
+
+            <% var loggedin = typeof loggedin !== "undefined" ? loggedin : true %>
+            <% if (loggedin) { %>
+                <div class="flex items-center gap-6 sm:gap-8">
+                    <a href="/shop" class="text-gray-800 hover:text-gray-600 transition-colors font-medium flex items-center">
+                        <i class="ri-home-4-line mr-1"></i>
+                        <span class="hidden sm:inline">Home</span>
+                    </a>
+                    <a href="/cart" class="text-gray-800 hover:text-gray-600 transition-colors font-medium flex items-center">
+                        <i class="ri-shopping-cart-2-line mr-1"></i>
+                        <span class="hidden sm:inline">Cart</span>
+                    </a>
+                    <a href="/profile" class="text-gray-800 hover:text-gray-600 transition-colors font-medium flex items-center">
+                        <i class="ri-user-3-line mr-1"></i>
+                        <span class="hidden sm:inline">My account</span>
+                    </a>
+                    <a href="/users/logout" class="text-red-600 hover:text-red-700 transition-colors flex items-center gap-1 font-medium">
+                        <i class="ri-logout-box-r-line"></i>
+                        <span class="hidden sm:inline">Logout</span>
+                    </a>
+                </div>
+            <% } %>
+        </div>
+    </nav>
+
+
+</body>
+</html>

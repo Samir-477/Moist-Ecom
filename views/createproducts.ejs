@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= currentPage %> | Moist</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Helvetica', 'Arial', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-gray-50">
+    <nav class="w-full px-4 sm:px-6 lg:px-8 bg-white shadow-md sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto flex justify-between items-center py-4">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <% 
+                let pageIcon = 'ri-pages-line';
+                switch(currentPage.toLowerCase()) {
+                    case 'home':
+                        pageIcon = 'ri-home-4-line';
+                        break;
+                    case 'shop':
+                        pageIcon = 'ri-store-2-line';
+                        break;
+                    case 'cart':
+                        pageIcon = 'ri-shopping-cart-2-line';
+                        break;
+                    case 'profile':
+                        pageIcon = 'ri-user-3-line';
+                        break;
+                }
+                %>
+                <i class="<%= pageIcon %> mr-2 text-black"></i>
+                <%= currentPage %>
+            </h1>
+
+            <% var loggedin = typeof loggedin !== "undefined" ? loggedin : true %>
+            <% if (loggedin) { %>
+                <div class="flex items-center gap-6 sm:gap-8">
+                    <a href="/owners/logout" class="text-black hover:text-gray-700 transition-colors flex items-center gap-1 font-medium">
+                        <i class="ri-logout-box-r-line"></i>
+                        <span class="hidden sm:inline">Logout</span>
+                    </a>
+                </div>
+            <% } %>
+        </div>
+    </nav>
+
+    <% if (success.length > 0) { %>
+        <div class="fixed top-20 left-1/2 transform -translate-x-1/2 p-4 rounded-md bg-green-500 text-white shadow-lg z-50">
+            <span class="inline-block">
+                <%= success %>
+            </span>
+        </div>
+    <% } %>
+
+    <div class="min-h-screen flex flex-col">
+        <div class="container mx-auto px-4 py-8 flex flex-grow">
+            <!-- Sidebar -->
+            <div class="w-full md:w-1/4 lg:w-1/5 flex flex-col items-start pr-8 border-r border-gray-200">
+                <h2 class="text-xl font-bold mb-6 text-gray-800">Store Management</h2>
+                <nav class="w-full space-y-2">
+                    <a class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-black hover:text-white transition-colors duration-200" href="/owners/allproducts">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                        </svg>
+                        All Products
+                    </a>
+                    <a class="flex items-center px-4 py-2 text-white bg-black rounded-lg transition-colors duration-200" href="/owners/createproducts">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        Create new product
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Main Content and Form -->
+            <main class="w-full md:w-3/4 lg:w-4/5 bg-white p-8 shadow-md rounded-lg ml-0 md:ml-8 mt-8 md:mt-0"> 
+                <h2 class="text-3xl font-bold mb-8 text-gray-800">Create New Product</h2>
+                <form autocomplete="off" action="/products/create" method="post" enctype="multipart/form-data" class="space-y-8">
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-xl font-semibold mb-6 text-gray-700">Product Details</h3>
+                        <div class="mb-6">
+                            <label for="image" class="block mb-2 font-medium text-gray-700">Product Image</label>
+                            <input id="image" name="image" type="file" class="py-2 px-4 rounded-lg border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block mb-2 font-medium text-gray-700">Product Name</label>
+                                <input id="name" name="name" type="text" placeholder="Enter product name" class="border border-gray-300 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent">
+                            </div>
+                            <div>
+                                <label for="price" class="block mb-2 font-medium text-gray-700">Product Price</label>
+                                <input id="price" name="price" type="text" placeholder="Enter product price" class="border border-gray-300 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent">
+                            </div>
+                            <div>
+                                <label for="discount" class="block mb-2 font-medium text-gray-700">Discount Price</label>
+                                <input id="discount" name="discount" type="text" placeholder="Enter discount price" class="border border-gray-300 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+                        <h3 class="text-xl font-semibold mb-6 text-gray-700">Panel Details</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label for="bgcolor" class="block mb-2 font-medium text-gray-700">Background Color</label>
+                                <input id="bgcolor" name="bgcolor" type="text" placeholder="Enter background color" class="border border-gray-300 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent">
+                            </div>
+                            <div>
+                                <label for="panelcolor" class="block mb-2 font-medium text-gray-700">Panel Color</label>
+                                <input id="panelcolor" name="panelcolor" type="text" placeholder="Enter panel color" class="border border-gray-300 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent">
+                            </div>
+                            <div>
+                                <label for="textcolor" class="block mb-2 font-medium text-gray-700">Text Color</label>
+                                <input id="textcolor" name="textcolor" type="text" placeholder="Enter text color" class="border border-gray-300 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="submit" class="px-6 py-3 rounded-lg bg-black text-white font-medium hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2">
+                            Create New Product
+                        </button>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+
+    <%- include('./partials/footer') %>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<%- include('./partials/header') %>
+
+<div class="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Success Message -->
+    <% if (success && success.length > 0) { %>
+      <div class="fixed top-5 left-1/2 transform -translate-x-1/2 p-4 rounded-md bg-green-500 shadow-lg z-50 transition-opacity duration-300 animate-fade-in-down">
+        <span class="text-white font-medium">
+          <%= success %>
+        </span>
+      </div>
+    <% } %>
+
+    <!-- Page Title -->
+    <h1 class="text-4xl font-bold text-gray-900 mb-8 text-center">Our Collection</h1>
+
+    <!-- Product Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      <% if (typeof products !== 'undefined' && products.length === 0) { %>
+        <div class="col-span-full text-center py-12">
+          <h2 class="text-2xl font-semibold text-gray-700">We're sorry, there are no products available at the moment.</h2>
+          <p class="mt-4 text-gray-600">Please check back later for our latest offerings.</p>
+        </div>
+      <% } %>
+      
+      <% if (typeof products !== 'undefined' && products.length > 0) { %>
+        <% products.forEach(function(product){ %>
+          <div class="bg-white rounded-2xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1">
+            <div class="h-72 flex items-center justify-center relative" style="background-color: <%= product.bgcolor %>;">
+              <img class="h-56 w-full object-contain transition-transform duration-300 transform hover:scale-105" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="<%= product.name %>">
+              <div class="absolute top-4 right-4">
+                <a href="/addtocart/<%= product._id %>" class="bg-white text-gray-800 p-3 rounded-full hover:bg-gray-100 transition duration-300 shadow-lg">
+                  <i class="ri-shopping-cart-line text-xl"></i>
+                  <span class="sr-only">Add to cart</span>
+                </a>
+              </div>
+            </div>
+            <div class="p-6" style="background-color: <%= product.panelcolor %>; color: <%= product.textcolor %>;">
+              <h3 class="text-xl font-semibold mb-2 truncate"><%= product.name %></h3>
+              <div class="flex justify-between items-center">
+                <div>
+                  <% if (product.discount > 0) { %>
+                    <p class="text-2xl font-bold">₹ <%= (product.price * (1 - product.discount / 100)).toFixed(2).toLocaleString('en-IN') %></p>
+                    <p class="text-sm line-through text-gray-500">₹ <%= product.price.toLocaleString('en-IN') %></p>
+                  <% } else { %>
+                    <p class="text-2xl font-bold">₹ <%= product.price.toLocaleString('en-IN') %></p>
+                  <% } %>
+                </div>
+                <% if (product.discount > 0) { %>
+                  <span class="text-sm bg-green-400 text-red-800 py-1 px-2 rounded-full">
+                    <%= product.discount %>% OFF
+                  </span>
+                <% } else { %>
+                  <span class="text-sm bg-yellow-400 text-yellow-800 py-1 px-2 rounded-full">New</span>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% } %>
+    </div>
+
+    <!-- Pagination (if needed) -->
+    <div class="mt-12 flex justify-center">
+      <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+        <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+          <span class="sr-only">Previous</span>
+          <i class="ri-arrow-left-s-line text-xl"></i>
+        </a>
+        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+          1
+        </a>
+        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+          2
+        </a>
+        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+          3
+        </a>
+        <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+          <span class="sr-only">Next</span>
+          <i class="ri-arrow-right-s-line text-xl"></i>
+        </a>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<%- include('./partials/footer') %>

@@ -1,0 +1,9 @@
+// const dbgr= require("debug")("development: mongoose");
+
+// So, basically to setup env variable in windows type this command ---> $env:DEBUG="development:*"
+// And to remove the env setup type this ---> Remove-Item Env:DEBUG
+
+
+//mongodb is schmema less, ie if fields are not filled then also it logins u in,we use joy based application....
+
+// we use try catch to not crash the server ... 
